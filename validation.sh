@@ -1,10 +1,10 @@
 #!bin/bash
 
 #Variables
-
+CONNECTION=$1
 #Code
 
-#ssh -t 192.168.56.101 -l oracle
+export ORACLE_SID=${CONNECTION}
 
 #Truncate logfile 
 echo > evidencia.log
@@ -18,6 +18,9 @@ if [ $ABERTO -ge 1 ]; then
     echo "Banco no ar"
     exit 0
 else
-    echo 'Banco baixado'
-    exit 1
+sqlplus -s "/as sysdba"<<EOF
+startup;
+quit;
+EOF
+    sqlplus -s "/as sysdba" @valida_db.sql
 fi
